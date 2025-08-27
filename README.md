@@ -67,13 +67,6 @@ Infer: Detect sentiment, topics, and intent.
 
 Chat: Interactive chatbot for any query.
 
-🔹 Screenshot / Demo
-<img width="1920" height="1080" alt="Screenshot 2025-08-27 135929" src="https://github.com/user-attachments/assets/2a6157e0-cb47-4803-9744-09d51bc8ba14" />
-
-🔹 Project Links
-GitHub: https://github.com/Haritha4170/prompt-engineering-chatbot
-
-
 
 
 🔹 Skills Learned
