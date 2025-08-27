@@ -28,17 +28,12 @@ def safe_openai_request(messages, max_retries=3):
             with st.spinner("🤖 Thinking... please wait"):
                 response = client.chat.completions.create(
                     model=model,
-                    messages=messages,
-                    request_timeout=60
+                    messages=messages
                 )
             return response
         except RateLimitError:
             st.warning("⚠️ Rate limit reached. Retrying in 20 seconds...")
             time.sleep(20)
-            retries += 1
-        except Timeout:
-            st.warning("⚠️ Request timed out. Retrying in 10 seconds...")
-            time.sleep(10)
             retries += 1
         except OpenAIError as e:
             st.warning(f"⚠️ OpenAI Error: {e}. Retrying in 10 seconds...")
@@ -47,6 +42,7 @@ def safe_openai_request(messages, max_retries=3):
 
     st.error("❌ Failed after multiple retries. Please try again later.")
     return None
+
 
 # Tabs for lessons
 tab1, tab2, tab3, tab4, tab5 = st.tabs(
