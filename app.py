@@ -1,24 +1,16 @@
-# app.py
 import os
 import time
 import streamlit as st
-import openai import OpenAI
+
+import openai
+from openai import OpenAI
+
 from dotenv import load_dotenv
-from openai.error import APIError, RateLimitError, Timeout   # ✅ fixed import
+from openai.error import APIError, RateLimitError, Timeout
 
-# Get API key from environment (Streamlit secrets)
+# Load API key (local .env or Streamlit secrets)
+load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
-st.title("Prompt Engineering Chatbot")
-
-user_input = st.text_input("Ask me something:")
-
-if user_input:
-    response = client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": user_input}]
-    )
-    st.write(response.choices[0].message.content)
 
 # Page config
 st.set_page_config(page_title="Prompt Engineering Chatbot", layout="wide")
