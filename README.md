@@ -52,6 +52,4 @@ OPENAI_API_KEY=sk-your_api_key_here
 streamlit run app.py
 
 
-Open your browser at http://localhost:8501 to interact with the chatbot.              <img width="1920" height="1080" alt="Screenshot 2025-08-27 135929" src="https://github.com/user-attachments/assets/5d34b9de-ade7-4323-bf36-5a187966566e" />
-
-
+Open your browser at http://localhost:8501 to interact with the chatbot. 
