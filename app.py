@@ -2,9 +2,9 @@ import os
 import time
 import streamlit as st
 from dotenv import load_dotenv
-from openai import OpenAI, OpenAIError, RateLimitError
+from openai import OpenAI, OpenAIError, RateLimitError, Timeout
 
-# Load local .env (optional)
+# Load environment variables from local .env (optional)
 load_dotenv()
 
 # Initialize OpenAI client
@@ -28,12 +28,17 @@ def safe_openai_request(messages, max_retries=3):
             with st.spinner("🤖 Thinking... please wait"):
                 response = client.chat.completions.create(
                     model=model,
-                    messages=messages
+                    messages=messages,
+                    request_timeout=60
                 )
             return response
         except RateLimitError:
             st.warning("⚠️ Rate limit reached. Retrying in 20 seconds...")
             time.sleep(20)
+            retries += 1
+        except Timeout:
+            st.warning("⚠️ Request timed out. Retrying in 10 seconds...")
+            time.sleep(10)
             retries += 1
         except OpenAIError as e:
             st.warning(f"⚠️ OpenAI Error: {e}. Retrying in 10 seconds...")
