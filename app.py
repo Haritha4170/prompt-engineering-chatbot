@@ -1,16 +1,14 @@
 import os
 import time
 import streamlit as st
-
-import openai
-from openai import OpenAI
-
 from dotenv import load_dotenv
-from openai.error import APIError, RateLimitError, Timeout
+from openai import OpenAI, OpenAIError, RateLimitError
 
-# Load API key (local .env or Streamlit secrets)
+# Load environment variables from local .env
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+api_key = st.secrets["OPENAI_API_KEY"] if "OPENAI_API_KEY" in st.secrets else os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=api_key)
 
 # Page config
 st.set_page_config(page_title="Prompt Engineering Chatbot", layout="wide")
@@ -27,7 +25,7 @@ def safe_openai_request(model, messages, max_retries=3):
     while retries < max_retries:
         try:
             with st.spinner("🤖 Thinking... please wait"):
-                response = openai.ChatCompletion.create(
+                response = client.chat.completions.create(
                     model=model,
                     messages=messages,
                     request_timeout=60
@@ -37,13 +35,10 @@ def safe_openai_request(model, messages, max_retries=3):
             st.warning("⚠️ Rate limit reached. Retrying in 20 seconds...")
             time.sleep(20)
             retries += 1
-        except Timeout:
-            st.warning("⚠️ Request timed out. Retrying in 10 seconds...")
+        except OpenAIError as e:
+            st.warning(f"⚠️ OpenAI Error: {e}. Retrying in 10 seconds...")
             time.sleep(10)
             retries += 1
-        except APIError as e:
-            st.error(f"⚠️ API Error: {e}")
-            break
 
     st.error("❌ Failed after multiple retries. Please try again later.")
     return None
@@ -62,15 +57,15 @@ with tab1:
         prompt = f"Summarize this text in {style.lower()}:\n{text}"
         response = safe_openai_request(model, [{"role": "user", "content": prompt}])
         if response:
-            st.write(response.choices[0].message["content"])
+            st.write(response.choices[0].message.content)
 
 # --- Transform ---
 with tab2:
     st.subheader("🔄 Transform Text")
     text = st.text_area("Paste text here:", key="transform")
     tone = st.selectbox(
-        "Transform to", 
-        ["Formal", "Casual", "Funny", "Professional", "Translate to Telugu"], 
+        "Transform to",
+        ["Formal", "Casual", "Funny", "Professional", "Translate to Telugu"],
         key="transform_tone"
     )
     if st.button("Transform", key="transform_btn") and text.strip():
@@ -80,7 +75,7 @@ with tab2:
             prompt = f"Transform this text into a {tone} style:\n{text}"
         response = safe_openai_request(model, [{"role": "user", "content": prompt}])
         if response:
-            st.write(response.choices[0].message["content"])
+            st.write(response.choices[0].message.content)
 
 # --- Expand ---
 with tab3:
@@ -90,7 +85,7 @@ with tab3:
         prompt = f"Expand this text with more details / make it professional:\n{text}"
         response = safe_openai_request(model, [{"role": "user", "content": prompt}])
         if response:
-            st.write(response.choices[0].message["content"])
+            st.write(response.choices[0].message.content)
 
 # --- Infer ---
 with tab4:
@@ -100,7 +95,7 @@ with tab4:
         prompt = f"Analyze this text. Give:\n- Sentiment\n- Topics Mentioned\n- Possible Intent\n\nText: {text}"
         response = safe_openai_request(model, [{"role": "user", "content": prompt}])
         if response:
-            st.write(response.choices[0].message["content"])
+            st.write(response.choices[0].message.content)
 
 # --- Chat ---
 with tab5:
@@ -120,14 +115,9 @@ with tab5:
             st.markdown(user_input)
 
         # Get assistant reply
-        try:
-            response = openai.ChatCompletion.create(
-                model=model,
-                messages=st.session_state["messages"]
-            )
-            bot_reply = response.choices[0].message["content"]
+        response = safe_openai_request(model, st.session_state["messages"])
+        if response:
+            bot_reply = response.choices[0].message.content
             with st.chat_message("assistant"):
                 st.markdown(bot_reply)
             st.session_state["messages"].append({"role": "assistant", "content": bot_reply})
-        except Exception as e:
-            st.error(f"⚠️ Error: {e}")
