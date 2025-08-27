@@ -6,12 +6,12 @@ A Python chatbot demonstrating lessons from a Prompt Engineering course: Summari
 
 ## 🔹 Features
 
-- **LLMs & Prompting Principles**: Explains types of LLMs and effective prompting techniques.
-- **Iterative Prompt Development**: Shows step-by-step prompt refinement.
-- **Summarization**: Converts long text into bullets, one line, or detailed summary.
-- **Inferring**: Extracts sentiment, topics, and possible intent.
-- **Transforming**: Changes tone, style, or translates text (e.g., Formal → Casual, English → Telugu).
-- **Expanding**: Expands short text into detailed outputs like emails or stories.
+- **LLMs & Prompting Principles**: Explains types of LLMs and effective prompting techniques.  
+- **Iterative Prompt Development**: Shows step-by-step prompt refinement.  
+- **Summarization**: Converts long text into bullets, one line, or detailed summary.  
+- **Inferring**: Extracts sentiment, topics, and possible intent.  
+- **Transforming**: Changes tone, style, or translates text (e.g., Formal → Casual, English → Telugu).  
+- **Expanding**: Expands short text into detailed outputs like emails or stories.  
 - **Chatbot (Capstone)**: Combines all lessons into one chatbot interface.
 
 ---
@@ -32,7 +32,8 @@ A Python chatbot demonstrating lessons from a Prompt Engineering course: Summari
 ```bash
 git clone https://github.com/Haritha4170/prompt-engineering-chatbot.git
 cd prompt-engineering-chatbot
-Create & activate virtual environment (Windows):
+
+## 🔹 2.Create & activate virtual environment (Windows):
 
 bash
 Copy code
@@ -48,8 +49,40 @@ Create a .env file with your OpenAI API key:
 ini
 Copy code
 OPENAI_API_KEY=sk-your_api_key_here
-🔹 Run the App
+Run the App:
+
+bash
+Copy code
 streamlit run app.py
+Open your browser at http://localhost:8501 to interact with the chatbot.
+
+🔹 Usage
+Summarize: Short or detailed summaries of long text.
+
+Transform: Change tone, style, or language.
+
+Expand: Turn short text into long-form outputs.
+
+Infer: Detect sentiment, topics, and intent.
+
+Chat: Interactive chatbot for any query.
+
+🔹 Screenshot / Demo
+<img width="1920" height="1080" alt="Screenshot 2025-08-27 135929" src="https://github.com/user-attachments/assets/2a6157e0-cb47-4803-9744-09d51bc8ba14" />
+
+🔹 Project Links
+GitHub: https://github.com/Haritha4170/prompt-engineering-chatbot
 
 
-Open your browser at http://localhost:8501 to interact with the chatbot. 
+
+
+🔹 Skills Learned
+Prompt engineering with LLMs
+
+Summarization, inference, transformation, expansion
+
+Streamlit app development
+
+OpenAI API integration
+
+Deploying Python apps
